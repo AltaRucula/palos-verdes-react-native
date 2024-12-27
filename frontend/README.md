@@ -1,0 +1,1 @@
+In case you are wondering why I'm using `onPressIn` function from the Button components instead of `<Link>` from Expo... this is why: https://github.com/software-mansion/react-native-screens/issues/2219
