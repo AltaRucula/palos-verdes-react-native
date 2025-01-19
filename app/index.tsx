@@ -1,26 +1,51 @@
+import { ErrorRetry } from '@/components/ErrorRetry';
 import { StackScreenWrapper } from '@/components/StackScreenWrapper';
-import { Link, router } from 'expo-router';
+import { useSession } from '@/hooks/auth';
+import { Link } from 'expo-router';
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { Button, IconButton, Text } from 'react-native-paper';
+import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 
 export default () => {
+    const {
+        data: session,
+        isLoading: isSessionLoading,
+        isError: isSessionError,
+        refetch: sessionRefetch,
+    } = useSession();
+
+    const getSessionContent = () => {
+        if (isSessionLoading) {
+            return <ActivityIndicator size={'large'} />;
+        }
+        if (isSessionError) {
+            return <ErrorRetry refetch={sessionRefetch} />;
+        }
+        if (session) {
+            return (
+                <Link
+                    asChild
+                    style={styles.sessionContent}
+                    href="/claims"
+                >
+                    <Button>Go to Claims</Button>
+                </Link>
+            );
+        }
+
+        return (
+            <Link
+                asChild
+                style={styles.sessionContent}
+                href="/auth/login"
+            >
+                <Button>Login</Button>
+            </Link>
+        );
+    };
+
     return (
-        <StackScreenWrapper
-            headerTitle="Palos Verdes"
-            headerRight={[
-                <IconButton
-                    key="login"
-                    icon="login"
-                    onPressIn={() => router.push('/auth/login')}
-                />,
-                <IconButton
-                    key="new-btn"
-                    icon="plus-box"
-                    onPressIn={() => router.push('/claims')}
-                />,
-            ]}
-        >
+        <StackScreenWrapper headerTitle="Palos Verdes">
             <ScrollView>
                 <Text
                     style={styles.paragraph}
@@ -49,20 +74,14 @@ export default () => {
                     </Text>
                 </Text>
 
-                <Link
-                    asChild
-                    style={styles.goToClaims}
-                    href="/claims"
-                >
-                    <Button>Go to Claims</Button>
-                </Link>
+                {getSessionContent()}
             </ScrollView>
         </StackScreenWrapper>
     );
 };
 
 const styles = StyleSheet.create({
-    goToClaims: {
+    sessionContent: {
         marginTop: 36,
     },
     paragraph: {

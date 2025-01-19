@@ -1,5 +1,5 @@
 import { StackScreenWrapper } from '@/components/StackScreenWrapper';
-import { useCreateClaim } from '@/hooks/useClaims';
+import { useCreateClaim } from '@/hooks/claims';
 import { TAGS, TOAST_DURATION } from '@/lib/const';
 import { NewClaim } from '@/types/claims';
 import { router } from 'expo-router';

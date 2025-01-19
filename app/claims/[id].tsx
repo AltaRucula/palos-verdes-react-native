@@ -1,6 +1,6 @@
 import { ErrorRetry } from '@/components/ErrorRetry';
 import { StackScreenWrapper } from '@/components/StackScreenWrapper';
-import { useClaim, useMessage, useVoteClaim } from '@/hooks/useClaims';
+import { useClaim, useMessage, useVoteClaim } from '@/hooks/claims';
 import { COMMENT_MIN_LENGTH, TOAST_DURATION } from '@/lib/const';
 import { formatDistanceToNow } from 'date-fns';
 import { useLocalSearchParams } from 'expo-router';
@@ -11,7 +11,7 @@ import { Card, Chip, HelperText, IconButton, Snackbar, Text, TextInput, useTheme
 export default () => {
     const theme = useTheme();
     const { id } = useLocalSearchParams<{ id: string }>();
-    const { data, isLoading, error, refetch } = useClaim(id);
+    const { data, isLoading, isError, refetch } = useClaim(id);
 
     const { mutate: voteClaim, status: voteStatus, isError: isVoteError } = useVoteClaim(id);
 
@@ -31,7 +31,7 @@ export default () => {
             return <ActivityIndicator size={'large'} />;
         }
 
-        if (error || !data) {
+        if (isError || !data) {
             return <ErrorRetry refetch={refetch} />;
         }
 

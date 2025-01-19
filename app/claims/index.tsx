@@ -1,6 +1,6 @@
 import { ErrorRetry } from '@/components/ErrorRetry';
 import { StackScreenWrapper } from '@/components/StackScreenWrapper';
-import { useClaims } from '@/hooks/useClaims';
+import { useClaims } from '@/hooks/claims';
 import { formatDistanceToNow } from 'date-fns';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
@@ -9,14 +9,14 @@ import { Avatar, Card, Chip, IconButton, Text } from 'react-native-paper';
 
 export default () => {
     const { id } = useLocalSearchParams<{ id: string }>();
-    const { data, isLoading, error, refetch } = useClaims();
+    const { data, isLoading, isError, refetch } = useClaims();
 
     const getContent = () => {
         if (isLoading) {
             return <ActivityIndicator size={'large'} />;
         }
 
-        if (error || !data) {
+        if (isError || !data) {
             return <ErrorRetry refetch={refetch} />;
         }
 

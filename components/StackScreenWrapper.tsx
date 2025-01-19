@@ -1,8 +1,10 @@
 import { ChangeThemeButton } from '@/components/ChangeThemeButton';
-import { Stack } from 'expo-router';
+import { ErrorRetry } from '@/components/ErrorRetry';
+import { useLogout, useSession } from '@/hooks/auth';
+import { router, Stack } from 'expo-router';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { IconButton, useTheme } from 'react-native-paper';
 
 export const StackScreenWrapper = ({
     children,
@@ -14,6 +16,43 @@ export const StackScreenWrapper = ({
     headerRight?: React.ReactNode[];
 }) => {
     const theme = useTheme();
+    const {
+        data: session,
+        isLoading: isSessionLoading,
+        isError: isSessionError,
+        refetch: sessionRefetch,
+    } = useSession();
+    const {
+        mutate: logoutSession,
+        isLoading: isLogoutSessionLoading,
+        isError: isLogoutSessionError,
+    } = useLogout(() => router.push('/'));
+
+    const getSessionButton = () => {
+        if (isSessionLoading) {
+            return <ActivityIndicator size={'large'} />;
+        }
+        if (isSessionError) {
+            return <ErrorRetry refetch={sessionRefetch} />;
+        }
+        if (session) {
+            return (
+                <IconButton
+                    key="logout"
+                    icon="logout"
+                    onPressIn={() => logoutSession()}
+                />
+            );
+        } else {
+            return (
+                <IconButton
+                    key="login"
+                    icon="login"
+                    onPressIn={() => router.push('/auth/login')}
+                />
+            );
+        }
+    };
 
     return (
         <View style={{ ...styles.container, backgroundColor: theme.colors.background }}>
@@ -26,6 +65,7 @@ export const StackScreenWrapper = ({
                     headerTitle,
                     headerRight: () => (
                         <View style={styles.headerRightContainer}>
+                            {getSessionButton()}
                             {headerRight?.map((icon) => icon)}
                             <ChangeThemeButton />
                         </View>

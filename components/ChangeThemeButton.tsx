@@ -1,9 +1,9 @@
-import { useColorSchemeContext } from '@/contexts/ColorSchemeProvider';
+import { useColorScheme } from '@/contexts/ColorSchemeProvider';
 import React from 'react';
 import { IconButton } from 'react-native-paper';
 
 export const ChangeThemeButton = () => {
-    const { colorScheme, setColorScheme } = useColorSchemeContext();
+    const { colorScheme, setColorScheme } = useColorScheme();
 
     return (
         <IconButton

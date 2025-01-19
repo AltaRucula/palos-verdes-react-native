@@ -1,5 +1,5 @@
 import { StackScreenWrapper } from '@/components/StackScreenWrapper';
-import { useLogin } from '@/hooks/useAuth';
+import { useLogin } from '@/hooks/auth';
 import { TOAST_DURATION } from '@/lib/const';
 import { Login } from '@/types/auth';
 import { router } from 'expo-router';
@@ -12,7 +12,7 @@ export default () => {
         email: '',
         password: '',
     });
-    const { mutate, isLoading, isError, error, failureReason } = useLogin(() => router.push('/claims'));
+    const { mutate, isLoading, isError } = useLogin(() => router.replace('/claims'));
     const [showError, setShowError] = useState(false);
 
     useEffect(() => setShowError(isError), [isError]);

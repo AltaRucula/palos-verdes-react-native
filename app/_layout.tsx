@@ -1,10 +1,10 @@
-import { Stack } from 'expo-router';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MD3DarkTheme, MD3LightTheme, PaperProvider } from 'react-native-paper';
-import { darkTheme, lightTheme } from '@/lib/theme';
-import { useState } from 'react';
 import { ColorSchemeProvider } from '@/contexts/ColorSchemeProvider';
+import { darkTheme, lightTheme } from '@/lib/theme';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Stack } from 'expo-router';
+import { useState } from 'react';
+import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import { MD3DarkTheme, MD3LightTheme, PaperProvider } from 'react-native-paper';
 
 const queryClient = new QueryClient();
 
@@ -25,13 +25,14 @@ export default () => {
                 }
                 barStyle="default"
             />
-            <QueryClientProvider client={queryClient}>
-                <ColorSchemeProvider value={{ colorScheme, setColorScheme }}>
-                    <PaperProvider theme={paperTheme}>
+
+            <ColorSchemeProvider value={{ colorScheme, setColorScheme }}>
+                <PaperProvider theme={paperTheme}>
+                    <QueryClientProvider client={queryClient}>
                         <Stack />
-                    </PaperProvider>
-                </ColorSchemeProvider>
-            </QueryClientProvider>
+                    </QueryClientProvider>
+                </PaperProvider>
+            </ColorSchemeProvider>
         </View>
     );
 };
