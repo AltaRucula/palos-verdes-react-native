@@ -7,6 +7,8 @@ export type Claim = {
     title: string;
     author: Author;
     votes: Vote[];
+    isAuthor: boolean;
+    hasVoted: boolean;
 };
 
 export type Message = {

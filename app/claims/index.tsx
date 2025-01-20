@@ -5,7 +5,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, Button, FlatList, Pressable, StyleSheet, View } from 'react-native';
-import { Avatar, Card, Chip, IconButton, Text } from 'react-native-paper';
+import { Card, Chip, IconButton, Text } from 'react-native-paper';
 
 export default () => {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -51,9 +51,9 @@ export default () => {
                                     subtitle={
                                         <View>
                                             <Text>
-                                                {formatDistanceToNow(item.createdAt, {
+                                                {`Created ${formatDistanceToNow(item.createdAt, {
                                                     addSuffix: true,
-                                                })}
+                                                })}`}
                                             </Text>
                                             <View style={styles.chipsContainer}>
                                                 {item.tags.map((tag, index) => (
@@ -68,13 +68,6 @@ export default () => {
                                             </View>
                                         </View>
                                     }
-                                    right={() => (
-                                        <Avatar.Text
-                                            label="UA"
-                                            size={36}
-                                            style={styles.cardAvatar}
-                                        />
-                                    )}
                                 />
                             </Card>
                         </Pressable>

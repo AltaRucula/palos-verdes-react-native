@@ -1,4 +1,5 @@
-import { API_URL } from '@/lib/env';
+import { fetchWithAuth } from '@/lib/fetch';
+import { getSession } from '@/lib/session';
 import { Claim } from '@/types/claims';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -6,7 +7,7 @@ export const useClaims = () =>
     useQuery<Claim[]>({
         queryKey: ['claims'],
         queryFn: async () => {
-            const response = await fetch(`${API_URL}/claims`);
+            const response = await fetchWithAuth('/claims');
 
             if (response.status !== 200) {
                 throw new Error('Failed to get claims');
@@ -20,7 +21,7 @@ export const useClaim = (id: string) =>
     useQuery<Claim>({
         queryKey: ['claim', id],
         queryFn: async () => {
-            const response = await fetch(`${API_URL}/claims/${id}`);
+            const response = await fetchWithAuth(`/claims/${id}`);
 
             if (response.status !== 200) {
                 throw new Error('Failed to get claim');
@@ -35,9 +36,10 @@ export const useCreateClaim = (onSuccess?: () => void) => {
 
     return useMutation({
         mutationFn: async (claim: Partial<Claim>) => {
-            const response = await fetch(`${API_URL}/claims`, {
+            const sessionToken = await getSession();
+
+            const response = await fetchWithAuth('/claims', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(claim),
             });
 
@@ -60,7 +62,7 @@ export const useVoteClaim = (id: string) => {
 
     return useMutation({
         mutationFn: async () => {
-            const response = await fetch(`${API_URL}/claims/${id}/votes`, {
+            const response = await fetchWithAuth(`/claims/${id}/votes`, {
                 method: 'POST',
             });
 
@@ -83,9 +85,8 @@ export const useMessage = (id: string) => {
 
     return useMutation({
         mutationFn: async (message: string) => {
-            const response = await fetch(`${API_URL}/claims/${id}/messages`, {
+            const response = await fetchWithAuth(`/claims/${id}/messages`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     content: message,
                 }),

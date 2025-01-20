@@ -12,7 +12,7 @@ export default () => {
     const theme = useTheme();
     const { id } = useLocalSearchParams<{ id: string }>();
     const { data, isLoading, isError, refetch } = useClaim(id);
-
+    
     const { mutate: voteClaim, status: voteStatus, isError: isVoteError } = useVoteClaim(id);
 
     const { mutate: sendMessage, status: messageStatus, isError: isMessageError } = useMessage(id);
@@ -44,21 +44,36 @@ export default () => {
                     />
                     <Card.Content>
                         <Text style={styles.text}>{data.content}</Text>
+                        <View style={styles.voteContainer}>
+                            <Text
+                                style={{ ...styles.text, color: theme.colors.secondary }}
+                                variant={'bodySmall'}
+                            >
+                                Votes: {data.votes.length ?? 0}
+                            </Text>
+                            <IconButton
+                                disabled={checked || data.hasVoted}
+                                loading={voteStatus === 'loading'}
+                                icon="thumb-up-outline"
+                                onPressIn={() => {
+                                    voteClaim();
+                                    setChecked(true);
+                                }}
+                            />
+                            <Snackbar
+                                visible={showVoteError}
+                                onDismiss={() => setShowVoteError(false)}
+                            >
+                                There was an error voting on this claim. Please try again.
+                            </Snackbar>
+                        </View>
                         <Text
                             style={{ ...styles.text, color: theme.colors.secondary }}
                             variant={'bodySmall'}
                         >
-                            Created{' '}
-                            {formatDistanceToNow(data.createdAt, {
+                            {`Created ${formatDistanceToNow(data.createdAt, {
                                 addSuffix: true,
-                            })}{' '}
-                            by {data.author.firstName}
-                        </Text>
-                        <Text
-                            style={{ ...styles.text, color: theme.colors.secondary }}
-                            variant={'bodySmall'}
-                        >
-                            Votes: {data.votes.length ?? 0}
+                            })} by ${data.author.firstName}`}
                         </Text>
                         <View style={styles.tags}>
                             {data.tags.map((tag, index) => (
@@ -72,24 +87,13 @@ export default () => {
                             ))}
                         </View>
                     </Card.Content>
-                    <Card.Actions>
-                        <IconButton
-                            disabled={checked}
-                            loading={voteStatus === 'loading'}
-                            icon="thumb-up-outline"
-                            onPressIn={() => {
-                                voteClaim();
-                                setChecked(true);
-                            }}
-                        />
-                        <Snackbar
-                            visible={showVoteError}
-                            onDismiss={() => setShowVoteError(false)}
-                        >
-                            There was an error voting on this claim. Please try again.
-                        </Snackbar>
-                    </Card.Actions>
+                </Card>
 
+                <Card style={styles.card}>
+                    <Card.Title
+                        title="Messages"
+                        titleVariant={'titleLarge'}
+                    />
                     <Card.Content>
                         <View
                             style={{
@@ -134,15 +138,7 @@ export default () => {
                         >
                             There was an error sending this comment. Please try again.
                         </Snackbar>
-                    </Card.Content>
-                </Card>
 
-                <Card style={styles.card}>
-                    <Card.Title
-                        title="Comments"
-                        titleVariant={'titleLarge'}
-                    />
-                    <Card.Content>
                         {data.messages.map((message, index) => (
                             <View
                                 key={index}
@@ -157,9 +153,9 @@ export default () => {
                                     }}
                                     variant={'bodySmall'}
                                 >
-                                    {formatDistanceToNow(message.createdAt, {
+                                    {`Created ${formatDistanceToNow(message.createdAt, {
                                         addSuffix: true,
-                                    })}
+                                    })} by ${message.author.firstName}`}
                                 </Text>
                             </View>
                         ))}
@@ -186,5 +182,9 @@ const styles = StyleSheet.create({
     },
     text: {
         marginVertical: 10,
+    },
+    voteContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });

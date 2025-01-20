@@ -13,7 +13,7 @@ export default () => {
         content: '',
         tags: [],
     });
-    const { mutate, isLoading, isError, error, failureReason } = useCreateClaim(() => router.push('/'));
+    const { mutate, isLoading, isError, error, failureReason } = useCreateClaim(() => router.push('/claims'));
     const [showError, setShowError] = useState(false);
 
     useEffect(() => setShowError(isError), [isError]);

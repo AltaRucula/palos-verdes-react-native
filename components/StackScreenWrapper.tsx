@@ -65,8 +65,8 @@ export const StackScreenWrapper = ({
                     headerTitle,
                     headerRight: () => (
                         <View style={styles.headerRightContainer}>
-                            {getSessionButton()}
                             {headerRight?.map((icon) => icon)}
+                            {getSessionButton()}
                             <ChangeThemeButton />
                         </View>
                     ),
