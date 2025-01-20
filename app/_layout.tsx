@@ -5,6 +5,7 @@ import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from 'react-native-paper';
+import '../globals.css';
 
 const queryClient = new QueryClient();
 
