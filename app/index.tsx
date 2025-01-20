@@ -6,7 +6,7 @@ import React from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
-export default () => {
+const Page = () => {
     const {
         data: session,
         isLoading: isSessionLoading,
@@ -88,3 +88,5 @@ const styles = StyleSheet.create({
         marginVertical: 12,
     },
 });
+
+export default Page;

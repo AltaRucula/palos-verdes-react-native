@@ -8,7 +8,7 @@ import { MD3DarkTheme, MD3LightTheme, PaperProvider } from 'react-native-paper';
 
 const queryClient = new QueryClient();
 
-export default () => {
+const Layout = () => {
     const [colorScheme, setColorScheme] = useState<'dark' | 'light'>(useColorScheme() ?? 'dark');
 
     const paperTheme =
@@ -27,6 +27,7 @@ export default () => {
             />
 
             <ColorSchemeProvider value={{ colorScheme, setColorScheme }}>
+                {/* PaperProvider will also use SafeAreaInsetsContext so we don't need to */}
                 <PaperProvider theme={paperTheme}>
                     <QueryClientProvider client={queryClient}>
                         <Stack />
@@ -42,3 +43,5 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 });
+
+export default Layout;

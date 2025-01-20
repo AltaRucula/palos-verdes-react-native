@@ -7,13 +7,13 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Card, Chip, Snackbar, TextInput } from 'react-native-paper';
 
-export default () => {
+const Page = () => {
     const [claim, setClaim] = useState<NewClaim>({
         title: '',
         content: '',
         tags: [],
     });
-    const { mutate, isLoading, isError, error, failureReason } = useCreateClaim(() => router.push('/claims'));
+    const { mutate, isLoading, isError} = useCreateClaim(() => router.push('/claims'));
     const [showError, setShowError] = useState(false);
 
     useEffect(() => setShowError(isError), [isError]);
@@ -118,3 +118,5 @@ const styles = StyleSheet.create({
         marginVertical: 15,
     },
 });
+
+export default Page;

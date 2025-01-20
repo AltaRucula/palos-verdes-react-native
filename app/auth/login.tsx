@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { Button, Card, Snackbar, TextInput } from 'react-native-paper';
 
-export default () => {
+const Page = () => {
     const [login, setLogin] = useState<Login>({
         email: '',
         password: '',
@@ -77,3 +77,5 @@ const styles = StyleSheet.create({
         marginVertical: 15,
     },
 });
+
+export default Page;

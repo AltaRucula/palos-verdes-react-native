@@ -2,13 +2,12 @@ import { ErrorRetry } from '@/components/ErrorRetry';
 import { StackScreenWrapper } from '@/components/StackScreenWrapper';
 import { useClaims } from '@/hooks/claims';
 import { formatDistanceToNow } from 'date-fns';
-import { Link, router, useLocalSearchParams } from 'expo-router';
+import { Link, router } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, Button, FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { Card, Chip, IconButton, Text } from 'react-native-paper';
 
-export default () => {
-    const { id } = useLocalSearchParams<{ id: string }>();
+const Page = () => {
     const { data, isLoading, isError, refetch } = useClaims();
 
     const getContent = () => {
@@ -117,3 +116,5 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
 });
+
+export default Page;

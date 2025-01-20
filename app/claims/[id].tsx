@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { Card, Chip, HelperText, IconButton, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
 
-export default () => {
+const Page = () => {
     const theme = useTheme();
     const { id } = useLocalSearchParams<{ id: string }>();
     const { data, isLoading, isError, refetch } = useClaim(id);
@@ -188,3 +188,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+
+export default Page;
